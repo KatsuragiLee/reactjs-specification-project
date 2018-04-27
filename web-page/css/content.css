@@ -13,7 +13,7 @@ html, body {
     background: white;
 
     max-width: 1920px;
-    height: 2000px;
+    height: 2200px;
     margin: 80px auto 0;
 
     font-size: 28px;
@@ -22,15 +22,20 @@ html, body {
 .content .section {
     font-size: 50px;
     margin: 0;
+    text-align: center;
     padding: 10px 5%;
+}
+
+.content p {
+    margin: 0;
+    padding: 10px 20px;
 }
 
 .content ul {
     list-style-type: none;
 
-    margin: 0;
     padding: 0 8%;
-    margin-bottom: 50px;
+    margin: 0 0 50px;
 }
 
 .content li a {
