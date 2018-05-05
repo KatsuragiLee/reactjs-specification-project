@@ -38,10 +38,18 @@ html, body {
     margin: 0 0 50px;
 }
 
-.content li a {
+.content a {
     color: black;
     text-decoration-line: none;
     font-family: "Calibri Light", serif;
+}
+
+.content p a{
+    color: #0077aa;
+}
+
+.content p a:hover {
+    color: aqua;
 }
 
 .content li a:hover span {
