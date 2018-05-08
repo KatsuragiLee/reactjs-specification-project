@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSX</title>
+
+    <link rel="stylesheet" href="../../../css/header.css">
+    <link rel="stylesheet" href="../../../css/content.css">
+    <link rel="stylesheet" href="../../../libraries/prism.css">
+
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <script src="../../../libraries/prism.js"></script>
+
+    <script type="text/babel" src="script.js"></script>
+
+</head>
+<body>
+
+<div class="header">
+    <a href="./../../../examples.html" class="logo">
+        <img src="../../../images/react-logo.png">
+        <p>JSX</p>
+    </a>
+    <div class="header-right">
+        <a href="../../../index.html">React.js</a>
+        <a href="../../../examples.html">Содержание</a>
+        <a href="../../../info.html">Информация</a>
+    </div>
+</div>
+<div id="delimiter"></div>
+
+<div class="content">
+    <p class="section">Внедрение JSX</p>
+
+    <p>Взгляните на это объявление переменной:</p>
+    <pre><code class="language-js">
+        const element = &lt;h1&gtHello, world!&lt;/h1&gt;;
+    </code></pre>
+
+    <p>Этот забавный синтаксис не является ни строкой, ни HTML. Он называется JSX - это расширение для JavaScript.
+    Мы рекомендуем использовать его для работы с React, чтобы описать, что представляет собой пользовательский
+        интерфейс (User Interface, UI). Синтаксис JSX может показаться вам схожим с языком разметки HTML, но он
+        обладает всей функциональностью JavaScript.</p>
+    <p>JSX создает "элементы" React. В следующей главе мы изучим, как добавить их в DOM. Далее же, мы рассмотрим
+    основы JSX, необходимые для работы с ним.</p>
+
+    <p class="section">Почему именно JSX?</p>
+
+    <p>React подразумевает тот факт, что логика визуализации по своей природе связана с логикой UI: как
+        обрабатываются события, как меняется состояние во времени и как подготавливаются данные для отображения.</p>
+    <p>Чтобы искусственно не разделять технологии, добавляя разметку и логику в отдельные файлы, React решает это
+    с помощью слабо связанных единиц - "компонентов". Мы обязательно ознакомимся с ними в последующих главах. Если
+    же вы все ещё неуверенно делаете разметку в JS, то по ходу нашего курса вы будете делать это более комфортно.</p>
+    <p>JSX не обязателен при работе с React, но большинство пользователей считает его неплохой визуальной помощью,
+    при работе с UI в коде JavaScript. Он позволяет React указывать на более конкретные ошибки и предупреждения.
+    Итак, приступим!</p>
+
+    <p class="section">Внедрение выражений в JSX</p>
+
+    <p>В JSX вы можете завернуть любое JavaScript выражение в фигурные скобки. Выражения в примере ниже являются
+    допустимыми:</p>
+    <pre><code class="language-js">
+        function formatName(user) {
+         return user.firstName + ' ' + user.lastName;
+        }
+
+        const user = {
+        firstName: 'Иван',
+        lastName: 'Иванов'
+        };
+
+        const element = (
+        &lt;h1&gt
+         Привет, {formatName(user)}!
+        &lt;h1&gt
+        );
+
+        ReactDOM.render(
+        element,
+        document.getElementById('root')
+        );
+    </code></pre>
+    <p>Выглядит результат следующим образом:</p>
+
+    <div id="example">
+        <div id="root"></div>
+    </div>
+
+    <p>Мы разбили JSX код на линии для более удобного чтения. Также, мы рекомендуем оборачивать его в круглые
+    скобки, чтобы избежать проблем из-за автоматической простановки точки с запятой.</p>
+
+    <p class="section">JSX тоже выражение!</p>
+
+    <p>После компиляции JSX выражения становтся постоянными объектами JavaScript. Это значит, что вы можете
+    использовать JSX внутри условного оператора <mark>if</mark> и циклического оператора
+        <mark>for</mark>, объявлять их переменными, принимать как аргументы и возвращать их из
+    функций:</p>
+</div>
+
+</body>
+</html>
