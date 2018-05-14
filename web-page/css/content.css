@@ -53,10 +53,20 @@ html, body {
     color: #71ebff;
 }
 
-#example {
+#example, #example2 {
     background-color: #f9f9f9;
     padding: 0 30px;
     margin: 10px;
     border: 2px solid #e4e4e4;
 }
 
+.warning {
+    background-color: #F0E68C;
+    padding: 0 30px;
+    margin: 10px;
+    border: 2px solid #e4e4e4;
+}
+
+.markJSX {
+    background: #71ebff;
+}
