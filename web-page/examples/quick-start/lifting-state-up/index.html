@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Передача состояния наверх</title>
+
+    <link rel="stylesheet" href="../../../css/header.css">
+    <link rel="stylesheet" href="../../../css/content.css">
+    <link rel="stylesheet" href="../../../libraries/prism.css">
+
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <script src="../../../libraries/prism.js"></script>
+
+    <script type="text/babel" src="script.js"></script>
+    <script type="text/babel" src="script2.js"></script>
+    <script type="text/babel" src="script3.js"></script>
+
+</head>
+<body>
+
+<div class="header">
+    <a href="./../../../examples.html" class="logo">
+        <img src="../../../images/react-logo.png">
+        <p>Передача состояния наверх</p>
+    </a>
+    <div class="header-right">
+        <a href="../../../index.html">React.js</a>
+        <a href="../../../examples.html">Содержание</a>
+        <a href="../../../info.html">Информация</a>
+    </div>
+</div>
+<div id="delimiter"></div>
+
+<div class="content">
+    <p class="section">Передача состояния наверх</p>
+
+    <p>Часто несколько компонентов должны реагировать на одни и те же изменения. Мы рекомендуем поднимать их общее
+    состояние вверх к ближайшему общему предку. Давайте посмотрим, как это работает на практике.</p>
+    <p>В этом разделе мы создадим термометр, который будет говорить нам, может ли вода кипеть при данной температуре.</p>
+    <p>А начнем мы с создания компонента <mark>BoilingVerdict</mark>. Он принимает свойство <mark>celsius</mark>,
+    отражающее температуру, и выводит ответ на нашу задачу:</p>
+
+    <pre><code class="language-js">
+        function BoilingVerdict(props) {
+            if (props.celsius >= 100) {
+                return &lt;p&gt;Вода будет кипеть.&lt;/p&gt;;
+            }
+            return &lt;p&gt;Вода не будет кипеть.&lt;/p&gt;;
+        }
+    </code></pre>
+
+    <p>Далее, мы создадим компонент <mark>Calculator</mark>. Он будет создавать <mark>&lt;input&gt;</mark>, который
+    позволит пользователю вводить температуру и хранить её значение в <mark>this.state.temperature</mark>.</p>
+    <p>Дополнительно он создаёт <mark>BoilingVerdict</mark> для текущего значения температуры.</p>
+
+    <pre><code class="language-js">
+        class Calculator extends React.Component {
+            constructor(props) {
+                super(props);
+                this.handleChange = this.handleChange.bind(this);
+                this.state = {temperature: ''};
+            }
+
+            handleChange(e) {
+                this.setState({temperature: e.target.value});
+            }
+
+            render() {
+                const temperature = this.state.temperature;
+                return (
+                    &lt;fieldset&gt;
+                        &lt;legend&gt;Введите температуру в градусах Цельсия:&lt;/legend&gt;
+                        &lt;input
+                            value={temperature}
+                            onChange={this.handleChange} /&gt;
+
+                        &lt;BoilingVerdict
+                            celsius={parseFloat(temperature)} /&gt;
+
+                    &lt;/fieldset&gt;
+                );
+            }
+        }
+    </code></pre>
+
+    <p>Объединив оба примера, в результате получим:</p>
+
+    <div id="example">
+        <div id="root"></div>
+    </div>
+
+    <p class="section">Добавление второго поля ввода</p>
+
+    <p>Теперь мы добавим ещё одну возможность - ввод температуры в градусах Цельсия, а также синхронизируем оба
+    варианта.</p>
+    <p>Мы можем начать с извлечения компонента <mark>TemperatureInput</mark> из <mark>Calculator</mark>. Также, добавим
+    новое свойство <mark>scale</mark>, хранящее или <mark>"c"</mark>, или <mark>"f"</mark>.</p>
+
+    <pre><code class="language-js">
+        const scaleNames = {
+            c: 'Цельсию',
+            f: 'Фаренгейту'
+        };
+
+        class TemperatureInput extends React.Component {
+            constructor(props) {
+                super(props);
+                this.handleChange = this.handleChange.bind(this);
+                this.state = {temperature: ''};
+            }
+
+            handleChange(e) {
+                this.setState({temperature: e.target.value});
+            }
+
+            render() {
+                const temperature = this.state.temperature;
+                const scale = this.props.scale;
+                return (
+                    &lt;fieldset&gt;
+                        &lt;legend&gt;Введите температуру в градусах по {scaleNames[scale]}:&lt;/legend&gt;
+                        &lt;input value={temperature}
+                            onChange={this.handleChange} /&gt;
+                    &lt;/fieldset&gt;
+                );
+            }
+        }
+    </code></pre>
+
+    <p>Теперь можно изменить <mark>Calculator</mark> так, чтобы он создавал два отдельных поля для температуры:</p>
+
+    <pre><code class="language-js">
+        class Calculator extends React.Component {
+            render() {
+                return (
+                    &lt;div&gt;
+                        &lt;TemperatureInput scale="c" /&gt;
+                        &lt;TemperatureInput scale="f" /&gt;
+                    &lt;/div&gt;
+                );
+            }
+        }
+    </code></pre>
+
+    <p>Сейчас у нас есть два поля ввода, но если вы введете температуру в одно из них, то другое не обновится. А это
+    не соответствует нашему требованию: синхронизировать их.</p>
+    <p>Также, мы не можем вывести на экран <mark>BoilingVerdict</mark> из <mark>Calculator</mark>.
+    <mark>Calculator</mark> не знает текущего значения температуры из-за того, что она спрятана в
+    <mark>TemperatureInput</mark>.</p>
+
+    <p class="section">Функции преобразования</p>
+
+    <p>Сперва, мы напишем две функции для конвертации градусов по Цельсию в градусы по Фаренгейту, и наоборот:</p>
+
+    <pre><code class="language-js">
+        function toCelsius(fahrenheit) {
+            return (fahrenheit - 32) * 5 / 9;
+        }
+
+        function toFahrenheit(celsius) {
+            return (celsius * 9 / 5) + 32;
+        }
+    </code></pre>
+
+    <p>Эти две функции преобразуют числа. Теперь, напишем другую функцию, которая будет брать строку
+    <mark>temperature</mark> и функцию, которая будет параметром для первой и возвращать эту строку. Мы будем
+    использовать их для перевода значения из одного поля ввода в другое.</p>
+    <p>В следующем примере, возвращается пустая строка при некорректном значении <mark>temperature</mark>, и
+    значение округляется до третьего знака после запятой:</p>
+
+    <pre><code class="language-js">
+        function tryConvert(temperature, convert) {
+            const input = parseFloat(temperature);
+            if (Number.isNaN(input)) {
+                return '';
+            }
+            const output = convert(input);
+            const rounded = Math.round(output * 1000) / 1000;
+            return rounded.toString();
+        }
+    </code></pre>
+
+    <p>Для примера, <mark>tryConvert('abc', toCelsius)</mark> вернет пустую строку, а
+    <mark>tryConvert('10.22', toFahrenheit)</mark> вернет <mark>"50.396"</mark>.</p>
+
+    <p class="section">Передача состояния наверх</p>
+
+    <p>Сейчас, оба компонента <mark>TemperatureInput</mark> независимо хранят свои значения в локальном состоянии:</p>
+
+    <pre><code class="language-js">
+        class TemperatureInput extends React.Component {
+            constructor(props) {
+                super(props);
+                this.handleChange = this.handleChange.bind(this);
+                this.state = {temperature: ''};
+            }
+
+            handleChange(e) {
+                this.setState({temperature: e.target.value});
+            }
+
+            render() {
+                const temperature = this.state.temperature;
+                // ...
+    </code></pre>
+
+    <p>Но мы хотим, чтобы они были синхронизированы друг с другом. При обновлении поля для Цельсия, поле Фаренгейта должно
+    вывести ковертированную величину, и наоборот.</p>
+
+    <p>В React делиться состоянием можно передачей его наверх к ближайшему общему предку компонентов. Мы удалим
+    локальное состояние из <mark>TemperatureInput</mark> и переместим его в <mark>Calculator</mark>.</p>
+    <p>Если <mark>Calculator</mark> будет владеть таким состоянием, то оно станет "источником истины" для обоих полей
+    ввода. Он сможет давать им значения, которые будут согласовываться друг с другом. Как только свойства обоих
+    компонентов <mark>TemperatureInput</mark> передадутся от их общего родителя - компонента <mark>Calculator</mark>, то
+    поля начнут синхронизацию.</p>
+    <p>Давайте разберем, как это работает, шаг за шагом.</p>
+    <p>Сперва, мы заменяем <mark>this.state.temperature</mark> на <mark>this.props.temperature</mark> в компоненте
+    <mark>TemperatureInput</mark>. Пока что, давайте представим, что <mark>this.props.temperature</mark> уже существует,
+    хотя нам и надо передать его из <mark>Calculator</mark> в будущем:</p>
+
+    <pre><code class="language-js">
+        render() {
+            // Было: const temperature = this.state.temperature;
+            const temperature = this.props.temperature;
+            // ...
+    </code></pre>
+</div>
+
+</body>
+</html>
