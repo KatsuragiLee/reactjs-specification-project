@@ -20,6 +20,7 @@ html, body {
     font-size: 28px;
 }
 
+
 .content .section {
     font-size: 50px;
     margin: 0;
@@ -81,4 +82,21 @@ span:hover {
 
 .markJSX {
     background: #71ebff;
+}
+
+
+
+.button a {
+    display: inline-block;
+    background: #0077aa;
+    padding: 6px 50px;
+    color: white;
+}
+
+.button a:hover {
+    background: #888888;
+}
+
+.next {
+    float: right;
 }
