@@ -49,12 +49,12 @@
           super(props);
           this.onSubmit = this.onSubmit.bind(this);
         }
-    
+
         onSubmit(event) {
           alert(`Имя пользователя: ${this.nameTextField.value}`);
           event.preventDefault();
         }
-    
+
         render() {
           return (
             &lt;form onSubmit={this.onSubmit}>
@@ -65,7 +65,7 @@
           );
         }
       }
-    
+
       ReactDOM.render(&lt;SearchUserForm />,  document.getElementById('root'));
     </code></pre>
 
@@ -78,7 +78,7 @@
 
     <div class="button">
         <a href="../../advanced/refs-and-dom">&laquo; Назад</a>
-        <a class="next" href="../../advanced/optimization">Далее &raquo;</a>
+        <a class="next" href="../../advanced/optimizing-perfomance">Далее &raquo;</a>
     </div>
 
 </div>

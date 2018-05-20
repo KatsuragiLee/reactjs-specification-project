@@ -70,6 +70,11 @@ span:hover {
     color: aqua;
 }
 
+.content img {
+    width: 90%;
+    margin: auto;
+}
+
 .example {
     background-color: #f9f9f9;
     padding: 0 30px;
@@ -78,14 +83,20 @@ span:hover {
 }
 
 .warning {
-    background-color: #F0E68C;
+    background-color: #fffdcb;
     padding: 0 30px;
     margin: 10px;
-    border: 2px solid #e4e4e4;
+    border-left: 20px solid #505050;
+}
+
+mark {
+    background: #e4e4e4;
+    border-radius: 5px;
+    padding: 0 10px;
 }
 
 .markJSX {
-    background: #71ebff;
+    background: rgb(168, 233, 255);
 }
 
 .button {
