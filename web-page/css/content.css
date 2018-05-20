@@ -89,7 +89,6 @@ span:hover {
 }
 
 .button {
-    position: absolute;
     bottom: 0;
     width: 1920px;
     max-width: 100%;
@@ -102,7 +101,8 @@ span:hover {
     color: white;
     text-align: center;
 
-    width: 8%;
+    min-width:8%;
+    width: auto;
     margin: 10px 0 10px 41.5%;
 
     border-radius: 12px;
