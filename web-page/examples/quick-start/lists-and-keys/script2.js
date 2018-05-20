@@ -25,7 +25,7 @@ function Blog(props) {
 
 const posts = [
     {id: 1, title: 'Hello, World!', content: 'Рады вас видеть!'},
-    {id: 2, title: 'Установка', content: 'Вы можету установить React с помощью npm.'}
+    {id: 2, title: 'Установка', content: 'Вы можете установить React с помощью npm.'}
 ];
 ReactDOM.render(
     <Blog posts={posts} />,
