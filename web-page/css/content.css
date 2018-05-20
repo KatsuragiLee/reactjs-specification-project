@@ -72,7 +72,8 @@ span:hover {
 
 .content img {
     width: 90%;
-    margin: auto;
+    display: block;
+    margin: 0 auto;
 }
 
 .example {
@@ -127,9 +128,4 @@ mark {
     float: right;
     margin-left: 0;
     margin-right: 41.5%;
-}
-
-img {
-    display: block;
-    margin-right: 200px;
 }
