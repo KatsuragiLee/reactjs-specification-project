@@ -12,12 +12,14 @@ html, body {
 
     background: white;
 
-    min-height: 100%;
+    min-height: calc(100% - 161px);
     max-width: 1920px;
     height: auto;
     margin: 80px auto 0;
 
     font-size: 28px;
+
+    padding-bottom: 80px;
 }
 
 
@@ -38,8 +40,8 @@ html, body {
 .content ul {
     list-style-type: none;
 
-    padding: 0 8%;
-    margin: 0 0 50px;
+    padding: 10px 8%;
+    margin: 0;
 }
 
 .content a {
@@ -86,22 +88,37 @@ span:hover {
     background: #71ebff;
 }
 
+.button {
+    position: absolute;
+    bottom: 0;
+    width: 1920px;
+    max-width: 100%;
+}
+
 .button a {
     display: inline-block;
-    background: #0077aa;
-    padding: 6px 50px;
+    background: #505050;
+    padding: 8px 0;
     color: white;
+    text-align: center;
+
+    width: 8%;
+    margin: 10px 0 10px 41.5%;
+
+    border-radius: 12px;
 }
 
 .button a:hover {
-    background: #888888;
+    background: #71ebff;
 }
 
-.next {
+.button a.next {
     float: right;
+    margin-left: 0;
+    margin-right: 41.5%;
 }
 
 img {
     display: block;
-    margin: 0 auto;
+    margin-right: 200px;
 }
