@@ -37,7 +37,7 @@
 <div class="content">
     <p class="section">Передача состояния наверх</p>
 
-    <p>Часто несколько компонентов должны реагировать на одни и те же изменения. Мы рекомендуем поднимать их общее
+    <p>Часто, несколько компонентов должны реагировать на одни и те же изменения. Мы рекомендуем поднимать их общее
     состояние вверх к ближайшему общему предку. Давайте посмотрим, как это работает на практике.</p>
     <p>В этом разделе мы создадим термометр, который будет говорить нам, может ли вода кипеть при данной температуре.</p>
     <p>А начнем мы с создания компонента <mark>BoilingVerdict</mark>. Он принимает свойство <mark>celsius</mark>,
@@ -94,7 +94,7 @@
 
     <p class="section">Добавление второго поля ввода</p>
 
-    <p>Теперь мы добавим ещё одну возможность - ввод температуры в градусах Цельсия, а также синхронизируем оба
+    <p>Теперь мы добавим ещё одну возможность - ввод температуры в градусах по Фаренгейту, а также синхронизируем оба
     варианта.</p>
     <p>Мы можем начать с извлечения компонента <mark>TemperatureInput</mark> из <mark>Calculator</mark>. Также, добавим
     новое свойство <mark>scale</mark>, хранящее или <mark>"c"</mark>, или <mark>"f"</mark>.</p>
@@ -227,6 +227,195 @@
             const temperature = this.props.temperature;
             // ...
     </code></pre>
+
+    <p>Мы знаем, что свойства используются только для чтения. Когда переменная <mark>temperature</mark> была в локальном
+    состоянии, компонент <mark>TemperatureInput</mark> мог только вызывать <mark>this.setState()</mark> для изменения
+    неё. Однако, теперь, когда <mark>temperature</mark> передаётся из родителя в качестве свойств,
+    <mark>TemperatureInput</mark> не имеет контроля над ней.</p>
+    <p>В React, это обычно решается с помощью преобразования компонента в "управляемый". Также как и DOM
+    <mark>&lt;input&gt;</mark> принимает свойства <mark>value</mark> и <mark>onChange</mark>,
+    <mark>TemperatureInput</mark> принимает свойства <mark>temperature</mark> и <mark>onTemperatureChange</mark> из
+    родителя <mark>Calculator</mark>.</p>
+    <p>Теперь, когда <mark>TemperatureInput</mark> хочет обновить температуру, он вызывает
+    <mark>this.props.onTemperatureChange</mark>:</p>
+
+    <pre><code class="language-js">
+        handleChange(e) {
+            // Было: this.setState({temperature: e.target.value});
+            this.props.onTemperatureChange(e.target.value);
+            // ...
+    </code></pre>
+
+    <div class="warning">
+        <p><b>Примечание:</b></p>
+        <p>Нет никакой особой разницы, какие имена дать свойствам <mark>temperature</mark> и
+        <mark>onTemperatureChange</mark> в пользовательских компонентах. Мы можем дать им любые имена, например, те же
+        <mark>value</mark> и <mark>onChange</mark>.</p>
+    </div>
+
+    <p>Свойство <mark>onTemperatureChange</mark> будет передано вместе со свойством <mark>temperature</mark> из
+    родительского компонента <mark>Calculator</mark>. Он будет обрабатывать изменения, модифицируя своё локальное
+    состояние, тем самым переотрисовывая оба входных значения. Скоро, мы рассмотрим другую реализацию компонента
+    <mark>Calculator</mark>.</p>
+    <p>Прежде чем углубиться в изменения в <mark>Calculator</mark>, давайте ещё раз взглянем на наши изменения в
+    компоненте <mark>TemperatureInput</mark>. Мы убрали из него локального состояние, и, вместо чтения
+    <mark>this.state.temperature</mark>, мы считываем теперь <mark>this.props.temperature</mark>. Вместо вызова
+    функции <mark>this.setState()</mark> для изменения свойств, мы вызываем функцию
+    <mark>this.props.onTemperatureChange()</mark>, которая будет передана с помощью <mark>Calculator</mark>:</p>
+
+    <pre><code class="language-js">
+        class TemperatureInput extends React.Component {
+            constructor(props) {
+            super(props);
+            this.handleChange = this.handleChange.bind(this);
+        }
+
+            handleChange(e) {
+                this.props.onTemperatureChange(e.target.value);
+            }
+
+            render() {
+                const temperature = this.props.temperature;
+                const scale = this.props.scale;
+                return (
+                    &lt;fieldset&gt;
+                        &lt;legend&gt;Введите температуру в градусах по {scaleNames[scale]}:&lt;/legend&gt;
+                        &lt;input value={temperature}
+                            onChange={this.handleChange} /&gt;
+                    &lt;/fieldset&gt;
+                );
+            }
+        }
+    </code></pre>
+
+    <p>Что ж, вернемся к компоненту <mark>Calculator</mark>.</p>
+    <p>Мы будем хранить текущие значения входных данных - <mark>temperature</mark> и <mark>scale</mark> - в локальном
+    состоянии. Это то состояние, которое мы "подняли наверх" из полей входных данных, и оно будет служить
+    "источником истины" для их обоих. Это то минимальное представление всей информации, которое нам необходимо знать,
+    чтобы отобразить оба входных значения.</p>
+    <p>Например, если мы введем "37" в поле Цельсия, то состояние компонента <mark>Calculator</mark> будет следующим:</p>
+
+    <pre><code class="language-js">
+        {
+            temperature: '37',
+            scale: 'c'
+        }
+    </code></pre>
+
+    <p>Если потом мы введем в поле Фаренгейта "212", то состояние <mark>Calculator</mark> станет:</p>
+
+    <pre><code class="language-js">
+        {
+            temperature: '212',
+            scale: 'а'
+        }
+    </code></pre>
+
+    <p>Мы можем хранить оба значения вводимых данных, но в этом нет нужды. Достаточно хранить значение последнего
+    заполненного поля и его размерность. Затем, мы можем вывести значение другого поля, основываясь на текущих
+    значениях <mark>temperature</mark> и <mark>alone</mark>.</p>
+    <p>Поля входных значений синхронизированы потому, что они вычисляются по общему состоянию:</p>
+
+    <pre><code class="language-js">
+        class Calculator extends React.Component {
+            constructor(props) {
+                super(props);
+                this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
+                this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
+                this.state = {temperature: '', scale: 'c'};
+            }
+
+            handleCelsiusChange(temperature) {
+                this.setState({scale: 'c', temperature});
+            }
+
+            handleFahrenheitChange(temperature) {
+                this.setState({scale: 'f', temperature});
+            }
+
+            render() {
+                const scale = this.state.scale;
+                const temperature = this.state.temperature;
+                const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
+                const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
+
+                return (
+                    &lt;div&gt;
+                        &lt;TemperatureInput
+                            scale="c"
+                            temperature={celsius}
+                            onTemperatureChange={this.handleCelsiusChange} /&gt;
+
+                        &lt;TemperatureInput
+                            scale="f"
+                            temperature={fahrenheit}
+                            onTemperatureChange={this.handleFahrenheitChange} /&gt;
+
+                        &lt;BoilingVerdict
+                            celsius={parseFloat(celsius)} /&gt;
+
+                    &lt;/div&gt;
+                );
+            }
+        }
+    </code></pre>
+
+    <p>И в итоге мы имеем:</p>
+
+    <div class="example">
+        <div id="root2"></div>
+    </div>
+
+    <p>Наконец, нет разницы в какое поле мы введем данные: <mark>this.state.temperature</mark> и
+    <mark>this.state.scale</mark> в <mark>Calculator</mark> будут обновляться. Одно значение мы получаем извне (от
+    пользователя), а другое будет рассчитываться на его основе.</p>
+    <p>Давайте, более подробно рассмотрим, что происходит, когда вы вводите данные:</p>
+
+    <ol>
+        <li>React вызывает специальную функцию <mark>onChange</mark> для DOM <mark>&lt;input&gt;</mark>. В нашем случае,
+        это метод <mark>handleChange</mark> компонента <mark>TemperatureInput</mark>.</li>
+        <li>Метод <mark>handleChange</mark> компонента <mark>TemperatureInput</mark> вызывает функцию
+        <mark>this.props.onTemperatureChange()</mark> с новым значением. Её свойства, включающие
+        <mark>onTemperatureChange</mark>, передаются её родителем - компонентом <mark>Calculator</mark>.</li>
+        <li>Во время предыдщего рендеринга, <mark>Calculator</mark> указал, что <mark>onTemperatureChange</mark> поля
+        Цельсия <mark>TemperatureInput</mark> это метод <mark>handleCelsiusChange</mark> компонента
+        <mark>Calculator</mark>, и <mark>onTemperatureChange</mark> поля Фаренгейта <mark>TemperatureInput</mark> -
+        метод <mark>handleFahrenheitChange</mark> компонента <mark>Calculator</mark>. Так вот: любой из эти методов
+        компонента <mark>Calculator</mark> вызывается в зависимости от того, какое из полей заполняется пользователем.
+        </li>
+        <li>Внутри этих методов, компонент <mark>Calculator</mark> запрашивает React для собственной перерисовки,
+        вызовом функции <mark>this.setState()</mark> с новым значением вводимых данных и с его размерностью.</li>
+        <li>React вызывает метод <mark>render</mark> компонента <mark>Calculator</mark>, чтобы узнать, как должен
+        выглядеть UI. Значения обоих входных данных пересчитываются, основываясь на текущем значение температуры и её
+        размерности. Здесь и происходит конвертация температуры.</li>
+        <li>React вызывает методы <mark>render</mark> обоих компонентов <mark>TemperatureInput</mark> с их новыми
+        свойствами, которые определил <mark>Calculator</mark>. Так React снова узнает, как должен выглядеть UI.</li>
+        <li>React DOM обновляет DOM для его соответствия текущим значениям входных данных. Поле, в которое мы ввели
+        значение, отправляет свой текущее значение и другое поле обновляется после конвертации температуры.</li>
+    </ol>
+
+    <p>Каждое обновление проходит эти шаги, чтобы поля оставались синхронизированными.</p>
+
+    <p class="section">Усвоенное</p>
+
+    <p>Должен быть один "источник истины" для любой информации, которая изменяется в приложении React. Обычно,
+    компоненту, который необходимо отрисовать, добавляют первичное состояние. Затем, если другим компонентам также
+    необходимо это состояние, то вы можете поднять его наверх к ближайшему общему предку. Вместо того, чтобы пытаться
+    синхронизировать состояние между разными компонентами, вам следует воспользоваться передачей информации "вниз
+    по течению".</p>
+    <p>Передача состояния наверх приводит к написанию более "шаблонного" кода, но это позволяет тратить меньше усилий
+    для поиска и решения ошибок. Так как любое состояние "живет" в каком-либо компоненте и только этот компонент может
+    менять его, то это позволяет уменьшить область ошибок. А также, вы можете применять любую пользовательскую логику
+    для отклонения или изменения пользовательских данных.</p>
+    <p>Если что-то может быть получено из свойств или состояния, то это, скорее всего, не должно быть в состоянии.
+    Например, вместо хранения значений температуры в градусах по Цельсию и по Фаренгейту, мы храним только последнее
+    полученное значение температуры и её размерность. Значение другого поля может всегда быть вычислено благодаря
+    методу <mark>render()</mark>. Это позволяет нам очищать и округлять значение другого поля без потери точности
+    пользовательских данных.</p>
+    <p>Если вы видите ошибку в отображении UI, то вы можете воспользоваться
+    <a href="https://github.com/facebook/react-devtools">React Developer Tools</a> для наблюдения за свойствами и
+    передачей информации по дереву, пока не найдете компонент, ответственный за обновление состояния. Это позволяет легко
+    отслеживать ошибки в коде.</p>
 </div>
 
 </body>
