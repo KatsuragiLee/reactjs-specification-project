@@ -29,6 +29,8 @@ html, body {
 }
 
 .content p {
+    text-indent: 50px;
+    text-align: justify;
     margin: 0;
     padding: 10px 20px;
 }
@@ -84,8 +86,6 @@ span:hover {
     background: #71ebff;
 }
 
-
-
 .button a {
     display: inline-block;
     background: #0077aa;
@@ -99,4 +99,9 @@ span:hover {
 
 .next {
     float: right;
+}
+
+img {
+    display: block;
+    margin: 0 auto;
 }
