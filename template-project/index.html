@@ -24,7 +24,7 @@
     </a>
     <div class="header-right">
         <a href="../../../../web-page/index.html">React.js</a>
-        <a href="../../../../web-page/examples.html">Примеры</a>
+        <a href="../../../../web-page/examples.html">Содержание</a>
         <a href="../../../../web-page/info.html">Информация</a>
     </div>
 </div>
@@ -43,12 +43,22 @@
         import CustomButton from './CustomButton';
         function WarningButton() {
         // return React.createElement(CustomButton, {color: 'red'}, null);
-        return <CustomButton color="red"/>;}
+        //ВАЖНО! символ открывающегося тега заменять на код символа: &lt;
+        //иначе весь тег проигнорится и не выведется
+        return &lt;CustomButton color="red"/>;}
     </code></pre>
 
     <!--ВСЕ ПРИМЕРЫ РАБОТЫ РЕАКТА ВНУТРИ ДИВА EXAMPLE-->
-    <div id="example">
+    <div class="example">
 
+    </div>
+
+    <!--КНОПОЧКИ НАЗАД ВПЕРЕД (если какой-то кнопки нет, то удаляем её)-->
+    <div class="button">
+        <!--ТУТ ССЫЛКА НА КНОПОЧКУ НАЗАД-->
+        <a href="../../quick-start/introducing-jsx/">&laquo; Назад</a>
+        <!--А ТУТ НА ВПЕРЕД-->
+        <a class="next" href="../../quick-start/introducing-jsx/">Далее &raquo;</a>
     </div>
 
 </div>
