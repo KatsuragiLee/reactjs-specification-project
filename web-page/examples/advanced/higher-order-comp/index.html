@@ -374,14 +374,14 @@
     <p>Тем не менее, бывают случаи, когда refs являются необходимым аварийным выходом – иначе React бы их не поддерживал. Примером может являться фокусировка поля ввода, где вы можете потребовать обязательный контроль над компонентом. В этом случае одним из решений является передача обратного вызова ref в качестве обычного свойства, давая ему другое имя:</p>
     <pre><code class="language-js">
   function TextField({ inputRef, ...rest }) {
-    return <input ref={inputRef} {...rest} />;
+    return &lt;input ref={inputRef} {...rest} />;
   }
 
   // Оберните TextField в старший компонент
   const FocusedTextField = addFocus(TextField);
 
   // Внутри метода render компонента...
-  <FocusedTextField
+  &lt;FocusedTextField
           inputRef={(input) => {
       // Этот коллбэк передается как обычное свойство
       this.inputElement = input
@@ -393,6 +393,10 @@
          <CustomButton color="red"/>
     </code></pre>
     <p>Это не идеальное решение. Разработчики рекомендуют, чтобы ссылки ref оставались заботой сторонних библиотек, а не требовали, чтобы вы вручную их обрабатывали. На данный момент ведется исследование путей решения этой проблемы, так что использование старших компонентов под наблюдением не находится.</p>
+    <div class="button">
+    <a href="../../advanced/error-boundaries/">&laquo; Назад</a>
+    <a class="next" href="../../advanced/forwarding-refs/">Далее &raquo;</a>
+    </div>
 </div>
 
 </body>
