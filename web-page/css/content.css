@@ -129,3 +129,25 @@ mark {
     margin-left: 0;
     margin-right: 41.5%;
 }
+
+table {
+    margin: auto;
+    align-content: center;
+    width: 95%;
+    border-collapse: collapse;
+    border: 1px solid grey;
+}
+
+th, td {
+    text-align: left;
+    padding: 10px;
+    border-collapse: collapse;
+    border: 1px solid grey;
+}
+
+th {
+    background: #ececec;
+}
+.th {
+    width: 40%;
+}
