@@ -208,7 +208,7 @@
     </code></pre>
 
     <p>Но мы хотим, чтобы они были синхронизированы друг с другом. При обновлении поля для Цельсия, поле Фаренгейта должно
-    вывести ковертированную величину, и наоборот.</p>
+    вывести конвертированную величину, и наоборот.</p>
 
     <p>В React делиться состоянием можно передачей его наверх к ближайшему общему предку компонентов. Мы удалим
     локальное состояние из <mark>TemperatureInput</mark> и переместим его в <mark>Calculator</mark>.</p>
@@ -377,7 +377,7 @@
         <li>Метод <mark>handleChange</mark> компонента <mark>TemperatureInput</mark> вызывает функцию
         <mark>this.props.onTemperatureChange()</mark> с новым значением. Её свойства, включающие
         <mark>onTemperatureChange</mark>, передаются её родителем - компонентом <mark>Calculator</mark>.</li>
-        <li>Во время предыдщего рендеринга, <mark>Calculator</mark> указал, что <mark>onTemperatureChange</mark> поля
+        <li>Во время предыдущего рендеринга, <mark>Calculator</mark> указал, что <mark>onTemperatureChange</mark> поля
         Цельсия <mark>TemperatureInput</mark> это метод <mark>handleCelsiusChange</mark> компонента
         <mark>Calculator</mark>, и <mark>onTemperatureChange</mark> поля Фаренгейта <mark>TemperatureInput</mark> -
         метод <mark>handleFahrenheitChange</mark> компонента <mark>Calculator</mark>. Так вот: любой из эти методов
